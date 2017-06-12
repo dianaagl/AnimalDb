@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">BackgroundTasksSample</string>
+    <string name="enter_name">Введите имя животного</string>
+    <string name="delete_animal">Удалить животное</string>
+    <string name="update_button">Обновить животное</string>
+</resources>
