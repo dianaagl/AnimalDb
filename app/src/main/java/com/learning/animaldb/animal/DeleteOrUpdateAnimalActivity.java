@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import com.learning.animaldb.R;
+import com.learning.animaldb.animal.db.AnimalsContract;
 
 /**
  * Created by Диана on 12.06.2017.
@@ -38,17 +39,18 @@ public class DeleteOrUpdateAnimalActivity extends Activity {
 
         final Intent intent = getIntent();
 
-        mNameEditText.setText(intent.getStringExtra("name"));
-        mAgeEditText.setText(String.valueOf(intent.getIntExtra("age",0)));
-        mSpecieEditText.setText(intent.getStringExtra("specie"));
+        mNameEditText.setText(intent.getStringExtra(AnimalsContract.Animals.NAME));
+        mAgeEditText.setText(String.valueOf(intent.getIntExtra(AnimalsContract.Animals.AGE,0)));
+        mSpecieEditText.setText(intent.getStringExtra(AnimalsContract.Animals.SPECIES));
 
         mDeleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Animal animal = new Animal(intent.getStringExtra("specie"),intent.getIntExtra("age",0),
-                        intent.getStringExtra("name"));
+                Animal animal = new Animal(intent.getStringExtra(AnimalsContract.Animals.SPECIES),intent.getIntExtra(
+                        AnimalsContract.Animals.AGE,0),
+                        intent.getStringExtra(AnimalsContract.Animals.NAME));
 
-                animal.setId(intent.getLongExtra("id",0));
+                animal.setId(intent.getLongExtra(AnimalsContract.Animals.ID,0));
                 mAnimalsStorage.deleteAnimal(animal);
                 finish();
             }
@@ -59,7 +61,7 @@ public class DeleteOrUpdateAnimalActivity extends Activity {
                 Animal animal = new Animal(String.valueOf(mSpecieEditText.getText()),
                         Integer.parseInt(String.valueOf(mAgeEditText.getText())),
                         String.valueOf(mNameEditText.getText()));
-                animal.setId(intent.getLongExtra("id",0));
+                animal.setId(intent.getLongExtra(AnimalsContract.Animals.ID,0));
                 mAnimalsStorage.updateAnimal(animal);
                 finish();
             }

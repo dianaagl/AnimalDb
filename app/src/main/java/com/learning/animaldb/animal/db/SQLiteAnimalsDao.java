@@ -24,7 +24,7 @@ public class SQLiteAnimalsDao extends SQLiteOpenHelper
 
     private static final String NAME = "animals.db";
     private static final long NO_ID = -1;
-    private static final int CURRENT_VERSION = 1;
+    public static int CURRENT_VERSION = 1;
 
     public static final String TABLE_NAME = "animals";
 
@@ -47,9 +47,36 @@ public class SQLiteAnimalsDao extends SQLiteOpenHelper
         Log.e(TAG, "sql = "+sql);
         db.execSQL(sql);
     }
+    public String[] getColumnNames(){
+        SQLiteDatabase db = getWritableDatabase();
+        String sql = "PRAGMA table_info(" + TABLE_NAME+")";
+        Cursor cursor = null;
+        String[] columnNames = null;
+        db.beginTransaction();
+        try{
+            cursor = db.query(TABLE_NAME,null, null,null,null,null,null);
+            columnNames = cursor.getColumnNames();
+            db.setTransactionSuccessful();
+        }
+        finally {
+            db.endTransaction();
+            if (cursor != null) {
+                cursor.close();
+            }
+            db.close();
+        }
+        return columnNames;
+
+    }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+
+        String sql = " DROP TABLE"+ TABLE_NAME+"; ";
+        db.execSQL(sql);
+        onCreate(db);
+        CURRENT_VERSION = newVersion;
+
     }
 
     @Override
@@ -69,7 +96,7 @@ public class SQLiteAnimalsDao extends SQLiteOpenHelper
     }
 
     @Override
-    public List<Animal> getAnimals() {
+    public List<Animal> getmAnimals() {
         List<Animal> animals = null;
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = null;
@@ -92,9 +119,29 @@ public class SQLiteAnimalsDao extends SQLiteOpenHelper
 
     @Override
     public Animal getAnimalById(long id) {
-        throw new UnsupportedOperationException(
-                "Not implemented yet"
-        );
+
+        SQLiteDatabase db = getWritableDatabase();
+        Cursor cursor = null;
+        Animal animal = new Animal();
+        try {
+            cursor = db.query(TABLE_NAME, null, null, null, null, null, null);
+
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast() ) {
+                if(createAnimal(cursor).getId() == id){
+                    animal = createAnimal(cursor);
+                }
+                cursor.moveToNext();
+            }
+
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            db.close();
+        }
+        return animal;
+
     }
 
     @Override

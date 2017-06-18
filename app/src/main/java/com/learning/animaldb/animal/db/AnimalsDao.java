@@ -11,7 +11,7 @@ public interface AnimalsDao {
 
     long insertAnimal(Animal animal);
 
-    List<Animal> getAnimals();
+    List<Animal> getmAnimals();
 
     Animal getAnimalById(long id);
 

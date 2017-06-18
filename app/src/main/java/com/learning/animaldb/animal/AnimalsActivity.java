@@ -17,6 +17,7 @@ import android.widget.ListView;
 import java.util.List;
 
 import com.learning.animaldb.R;
+import com.learning.animaldb.animal.db.AnimalsContract;
 
 /**
  * @author QuickNick
@@ -25,8 +26,11 @@ public class AnimalsActivity extends AppCompatActivity {
 
     private static final int ANIMALS_LOADER_ID = 1;
 
+
     private AnimalsStorage mAnimalsStorage;
     private AnimalsAdapter mAdapter;
+
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,10 +52,10 @@ public class AnimalsActivity extends AppCompatActivity {
                 Intent intent = new Intent(AnimalsActivity.this,
                         DeleteOrUpdateAnimalActivity.class);
                 Animal animal = (Animal) listView.getItemAtPosition(position);
-                intent.putExtra("name",animal.getName());
-                intent.putExtra("id",animal.getId());
-                intent.putExtra("age",animal.getAge());
-                intent.putExtra("specie",animal.getSpecies());
+                intent.putExtra(AnimalsContract.Animals.NAME,animal.getName());
+                intent.putExtra(AnimalsContract.Animals.ID,animal.getId());
+                intent.putExtra(AnimalsContract.Animals.AGE,animal.getAge());
+                intent.putExtra(AnimalsContract.Animals.SPECIES,animal.getSpecies());
 
                 startActivity(intent);
             }
